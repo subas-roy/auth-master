@@ -16,12 +16,12 @@ const Register = () => {
 
     // create User in Firebase
     createUser(email, password)
-    .then(result => {
-      console.log(result.user);
-    })
-    .catch(error => {
-      console.log(error);
-    })
+      .then(result => {
+        console.log(result.user);
+      })
+      .catch(error => {
+        console.log(error);
+      })
   }
   
   return (
