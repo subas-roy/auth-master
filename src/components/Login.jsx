@@ -1,11 +1,12 @@
 import { useContext } from "react";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../providers/AuthProvider";
 
 const Login = () => {
 
-  const {signInUser} = useContext(AuthContext);
+  const { signInUser, signInWithGoogle } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleLogin = e => {
     e.preventDefault();
@@ -14,15 +15,27 @@ const Login = () => {
     console.log(email, password);
 
     signInUser(email, password)
-    .then(result => {
-      console.log(result.user)
-    })
-    .catch(error => {
-      console.error(error)
-    })
+      .then(result => {
+        console.log(result.user)
+        e.target.reset(); // reset form after clicking login
+        navigate('/'); // default redirect after login
+      })
+      .catch(error => {
+        console.error(error)
+      })
   }
 
-  
+  const handleGoogleSignIn = (e) => {
+    e.preventDefault();
+    signInWithGoogle()
+      .then(result => {
+        console.log(result.user)
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }
+
   return (
     <div className="hero bg-base-200 min-h-screen">
       <Helmet>
@@ -53,6 +66,7 @@ const Login = () => {
               <button className="btn btn-primary">Login</button>
             </div>
             <p>New here? Please <Link to={"/register"}><button className="btn btn-link">Register</button></Link></p>
+            <p><button onClick={handleGoogleSignIn} className="btn btn-ghost">Google</button></p>
           </form>
         </div>
       </div>
